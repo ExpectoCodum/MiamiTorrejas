@@ -117,13 +117,534 @@ app-root .whatsapp-btn:disabled {
   opacity: 0.6;
 }
 
+app-root .sticky-checkout {
+  gap: 14px;
+  padding: clamp(16px, 3vw, 24px);
+}
+
+app-root .delivery-toggle button {
+  min-height: 48px;
+  font-size: 0.95rem;
+}
+
+app-root .checkout-summary {
+  display: grid;
+  gap: 12px;
+  padding: 14px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+app-root .payment-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+app-root .payment-option {
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+app-root .payment-label {
+  color: #fbcfe8;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+app-root .payment-amount {
+  color: #fff;
+  font-size: clamp(1.25rem, 3vw, 1.65rem);
+  font-weight: 900;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+app-root .tax-note {
+  color: #fbcfe8;
+  font-size: 0.76rem;
+}
+
+app-root .checkout-notes {
+  display: grid;
+  gap: 4px;
+}
+
+app-root .shipping-note {
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+app-root .payment-note {
+  color: #fbcfe8;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+app-root .whatsapp-btn {
+  width: 100%;
+  min-height: 52px;
+  padding: 13px 18px;
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+app-root .calculator-section {
+  scroll-margin-top: 24px;
+}
+
+app-root .service-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 12px;
+}
+
+app-root .service-link p {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+app-root .service-link:focus-visible {
+  outline: 3px solid #ec4899;
+  outline-offset: 4px;
+}
+
+app-root .insta-wrapper .services-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr) 1px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-bottom: 4px solid #3b180e;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #fff 0%, #fff0f6 100%);
+  box-shadow: 0 12px 28px rgba(59, 24, 14, 0.14);
+}
+
+app-root .insta-wrapper .services-strip .service-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  text-align: left;
+  transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+app-root .insta-wrapper .services-strip .service-item h4 {
+  margin: 0;
+  color: #3b180e;
+  font-size: 0.98rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+}
+
+app-root .insta-wrapper .services-strip .service-item p {
+  margin: 4px 0 0;
+  color: #78350f;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+app-root .insta-wrapper .service-icon {
+  display: grid;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 13px;
+  background: #fce7f3;
+  font-size: 1.2rem;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+app-root .insta-wrapper .service-copy {
+  min-width: 0;
+}
+
+app-root .insta-wrapper .services-strip .divider {
+  align-self: center;
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(180deg, transparent, #f3a5c5 20%, #f3a5c5 80%, transparent);
+}
+
+app-root .insta-wrapper .service-arrow {
+  display: inline-block;
+  margin-left: 3px;
+  transition: transform 180ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  app-root .insta-wrapper .service-link:hover {
+    transform: translateY(-3px);
+    border-color: #f3a5c5;
+    background: #fff;
+    box-shadow: 0 8px 18px rgba(190, 24, 93, 0.12);
+  }
+
+  app-root .insta-wrapper .service-link:hover .service-icon {
+    transform: scale(1.08) rotate(-4deg);
+    background: #fbcfe8;
+  }
+
+  app-root .insta-wrapper .service-link:hover h4,
+  app-root .insta-wrapper .service-link:hover p {
+    color: #be185d;
+  }
+
+  app-root .insta-wrapper .service-link:hover .service-arrow {
+    transform: translateX(3px);
+  }
+}
+
+app-root .calculator-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  border: 2px solid #fff;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #3b180e, #5c2818);
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 15px 30px rgba(59, 24, 14, 0.2);
+}
+
+app-root .calculator-toggle strong,
+app-root .calculator-toggle small {
+  display: block;
+}
+
+app-root .calculator-toggle strong {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+}
+
+app-root .calculator-toggle small {
+  margin-top: 4px;
+  color: #ffdbe8;
+}
+
+app-root .calculator-toggle:focus-visible,
+app-root .flavor-choice button:focus-visible,
+app-root .qty-selector button:focus-visible,
+app-root .delivery-toggle button:focus-visible,
+app-root .whatsapp-btn:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+}
+
+app-root .toggle-icon {
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #ec4899;
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+app-root #calculator-panel {
+  margin-top: 14px;
+  animation: calculatorReveal 260ms ease-out both;
+}
+
+@keyframes calculatorReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+app-root .quantity-hint {
+  margin: 10px 0 0;
+  color: #5c2818;
+  font-size: 0.8rem;
+}
+
+app-root .pricing-note {
+  margin: 0 0 14px;
+  color: #3b180e;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+app-root .variant-list {
+  display: grid;
+  gap: 10px;
+}
+
+app-root .variant-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(59, 24, 14, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+app-root .variant-info {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+app-root .variant-name {
+  color: #3b180e;
+  font-weight: 800;
+}
+
+app-root .variant-total {
+  color: #5c2818;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+app-root .mini-price {
+  margin-bottom: 12px;
+  color: #3b180e;
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+app-root .mini-price small {
+  font-size: 0.85rem;
+}
+
+app-root .mini-quantity-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 2px solid rgba(59, 24, 14, 0.1);
+  color: #3b180e;
+  font-weight: 700;
+}
+
+app-root .qty-selector button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+@media (max-width: 700px) {
+  app-root .hero-split-section {
+    min-height: auto;
+    padding: 28px 16px 36px;
+  }
+
+  app-root .hero-grid {
+    gap: 24px;
+  }
+
+  app-root .hero-food-img {
+    max-height: 300px;
+  }
+
+  app-root .content-container {
+    gap: 24px;
+    padding-inline: 14px;
+  }
+
+  app-root .section-title {
+    margin-top: 0;
+  }
+
+  app-root .section-title h2 {
+    font-size: clamp(1.45rem, 7vw, 2rem);
+    line-height: 1.15;
+  }
+
+  app-root .products-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  app-root .img-container {
+    height: clamp(170px, 55vw, 240px);
+  }
+
+  app-root .card-bottom {
+    padding: 18px;
+  }
+
+  app-root .price-row {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  app-root .sticky-checkout {
+    padding: 14px;
+    gap: 12px;
+  }
+
+  app-root .delivery-toggle {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  app-root .delivery-toggle button {
+    min-height: 48px;
+  }
+
+  app-root .checkout-summary {
+    gap: 10px;
+    padding: 12px 0;
+  }
+
+  app-root .payment-options {
+    gap: 8px;
+  }
+
+  app-root .payment-option {
+    gap: 3px;
+    padding: 10px;
+  }
+
+  app-root .payment-label {
+    font-size: 0.82rem;
+  }
+
+  app-root .payment-amount {
+    font-size: 1.25rem;
+  }
+
+  app-root .tax-note {
+    font-size: 0.7rem;
+  }
+
+  app-root .shipping-note {
+    font-size: 0.88rem;
+  }
+
+  app-root .payment-note {
+    font-size: 0.76rem;
+  }
+
+  app-root .whatsapp-btn {
+    min-height: 54px;
+    padding: 12px;
+    font-size: 0.95rem;
+    line-height: 1.3;
+  }
+
+  app-root .insta-wrapper .services-strip {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+    padding: 10px 12px;
+    border-radius: 18px;
+  }
+
+  app-root .insta-wrapper .services-strip .service-item {
+    justify-content: flex-start;
+    gap: 12px;
+    min-height: 62px;
+    width: 100%;
+    padding: 9px 10px;
+    border-radius: 12px;
+  }
+
+  app-root .insta-wrapper .services-strip .divider {
+    display: none;
+  }
+
+  app-root .insta-wrapper .services-strip .service-item h4 {
+    font-size: 0.92rem;
+  }
+
+  app-root .insta-wrapper .services-strip .service-item p {
+    margin-top: 2px;
+    font-size: 0.76rem;
+  }
+
+  app-root .insta-wrapper .service-icon {
+    flex-basis: 38px;
+    width: 38px;
+    height: 38px;
+  }
+
+  app-root .insta-wrapper .services-strip .service-item:not(:last-child) {
+    border-bottom: 1px solid #f7c7da;
+    border-radius: 12px 12px 0 0;
+  }
+
+  app-root .insta-wrapper .service-link:hover {
+    transform: translateX(3px);
+  }
+
+  app-root .calculator-toggle {
+    padding: 16px;
+  }
+
+  app-root .variant-row {
+    gap: 8px;
+    padding: 9px;
+  }
+
+  app-root .variant-name {
+    font-size: 0.95rem;
+  }
+
+  app-root .variant-row .qty-selector {
+    gap: 6px;
+    padding: 4px;
+  }
+
+  app-root .variant-row .qty-selector button {
+    width: 36px;
+    height: 36px;
+  }
+
+  app-root .variant-row .qty-selector span {
+    min-width: 22px;
+    font-size: 1rem;
+  }
+
+  app-root .calculator-card {
+    padding: 22px 16px;
+  }
+
+  app-root .calc-header h3 {
+    font-size: 1.4rem;
+  }
+}
+
 @media (max-width: 899px), (prefers-reduced-motion: reduce), (hover: none) and (pointer: coarse) {
   app-root .animate-fade-down,
   app-root .animate-scale-up,
   app-root .animate-fade-up,
   app-root .float-animation,
   app-root .light-aura,
-  app-root .shadow-base {
+  app-root .shadow-base,
+  app-root #calculator-panel {
     animation: none !important;
   }
 

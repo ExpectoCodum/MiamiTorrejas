@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { OrderService } from './services/order.service';
@@ -13,7 +13,7 @@ import { FloatingBgComponent } from './components/floating-bg.component';
     <app-floating-bg />
 
     <main class="insta-wrapper">
-      
+
       <!-- BARRA SUPERIOR -->
       <div class="top-badge animate-fade-down">
         <span>✨ CALIDAD PREMIUM ARTESANAL · EL SABOR DE LA ABUELA ✨</span>
@@ -24,7 +24,7 @@ import { FloatingBgComponent } from './components/floating-bg.component';
         <div class="light-aura"></div>
 
         <div class="hero-grid">
-          
+
           <!-- COLUMNA IZQUIERDA: EL ANTOJO VISUAL (IMAGEN FLOTANTE) -->
           <div class="hero-image-col animate-scale-up">
             <div class="food-display-wrapper float-animation">
@@ -55,131 +55,209 @@ import { FloatingBgComponent } from './components/floating-bg.component';
 
             <div class="hero-actions">
               <a href="#productos" class="btn-primary-glow">🍽️ VER BANDEJAS</a>
-              <a href="#cotizador" class="btn-secondary">🎉 CALCULADORA DE EVENTOS</a>
+              <a href="#cotizador" class="btn-secondary" (click)="openCalculator()">🎉 COTIZAR EVENTO</a>
             </div>
           </div>
 
         </div>
       </header>
 
-      <!-- SECCIÓN PRINCIPAL SEPARADA DEL HERO -->
       <div class="content-container">
-        
-        <!-- TIRA DE SERVICIOS ESTILO FLYER -->
-        <section class="services-strip">
-          <div class="service-item">
-            <h4>DELIVERY</h4>
-            <p>ENTREGA A DOMICILIO</p>
-          </div>
-          <div class="divider"></div>
-          <div class="service-item">
-            <h4>PICK-UP</h4>
-            <p>RECOGIDA EN FLAGLER</p>
-          </div>
-          <div class="divider"></div>
-          <div class="service-item">
-            <h4>CATERING</h4>
-            <p>VAMOS A LOS EVENTOS</p>
-          </div>
-        </section>
-
-        <!-- COTIZADOR INDEPENDIENTE CON BUEN ESPACIADO -->
-        <section id="cotizador" class="card calculator-card">
-          <div class="calc-header">
-            <h3>🎉 Cotizador Rápido de Eventos</h3>
-            <p>Calcula las porciones ideales para que ningún invitado se quede con antojo</p>
-          </div>
-
-          <div class="calc-grid">
-            <div class="input-box">
-              <label>👥 ¿Cuántos invitados tendrás?</label>
-              <input type="number" 
-                     [ngModel]="orderService.guestsCount()" 
-                     (ngModelChange)="orderService.guestsCount.set($event)" 
-                     min="1">
-            </div>
-
-            <div class="input-box">
-              <label>📅 Fecha del Evento</label>
-              <input type="date" 
-                     [ngModel]="orderService.eventDate()" 
-                     (ngModelChange)="orderService.eventDate.set($event)">
-            </div>
-
-            <div class="input-box">
-              <label>⏰ Hora Estimada</label>
-              <input type="time" 
-                     [ngModel]="orderService.eventTime()" 
-                     (ngModelChange)="orderService.eventTime.set($event)">
-            </div>
-          </div>
-
-          <div class="recommendation-banner">
-            💡 Para <strong>{{ orderService.guestsCount() }} personas</strong>, te sugerimos al menos 
-            <span class="highlight">{{ orderService.recommendedTrays() }} bandeja(s) mini</span> para que todos repitan.
-          </div>
-        </section>
-
-        <!-- SECCIÓN DE PRODUCTOS ESTILO INSTAGRAM -->
         <div id="productos" class="section-title">
-          <h2>SELECCIONA TUS BANDEJAS</h2>
-          <p>Preparadas frescas al momento con almíbar artesanal</p>
+          <h2>ELIGE TUS TORREJAS</h2>
+          <p>Confirma cantidades y coordina el pago y el envío por WhatsApp</p>
         </div>
 
         <section class="products-grid">
           <div *ngFor="let product of orderService.products()" class="insta-product-card">
             <div class="img-container">
               <img [src]="product.image" [alt]="product.name">
-              <span class="unit-pill">{{ product.unitsPerTray }} UDS</span>
+              <span class="unit-pill">{{ product.unitLabel }}</span>
             </div>
-            
+
             <div class="card-bottom">
               <h3 class="product-title">{{ product.name | uppercase }}</h3>
               <p class="product-desc">{{ product.description }}</p>
-              
-              <div class="price-row">
-                <span class="price">\${{ product.pricePerTray }} <small>USD</small></span>
-                
-                <div class="qty-selector">
-                  <button (click)="orderService.updateQuantity(product.id, -1)">-</button>
-                  <span>{{ orderService.cart().get(product.id) || 0 }}</span>
-                  <button class="add" (click)="orderService.updateQuantity(product.id, 1)">+</button>
+              <ng-container *ngIf="product.id === 'regulares'; else miniQuantity">
+                <p class="pricing-note">Desde $20 por 10 · suma 5 torrejas por vez</p>
+                <div class="variant-list" aria-label="Selecciona cantidades por sabor">
+                  <div *ngFor="let variant of orderService.regularVariants" class="variant-row">
+                    <div class="variant-info">
+                      <span class="variant-name">{{ variant.name }}</span>
+                      <span class="variant-total">
+                        {{ orderService.quantity(variant.id) }} uds ·
+                        {{ orderService.formatCurrency(orderService.lineTotal(variant.id)) }}
+                      </span>
+                    </div>
+                    <div class="qty-selector">
+                      <button type="button"
+                              [disabled]="orderService.quantity(variant.id) === 0"
+                              [attr.aria-label]="'Quitar 5 torrejas ' + variant.name"
+                              (click)="orderService.updateQuantity(variant.id, -1)">−</button>
+                      <span>{{ orderService.quantity(variant.id) }}</span>
+                      <button type="button"
+                              class="add"
+                              [attr.aria-label]="'Agregar ' +
+                                (orderService.quantity(variant.id) === 0 ? 10 : 5) +
+                                ' torrejas ' + variant.name"
+                              (click)="orderService.updateQuantity(variant.id, 1)">+</button>
+                    </div>
+                  </div>
+                </div>
+                <p class="quantity-hint">Cada sabor se cotiza por separado: $2 por unidad.</p>
+              </ng-container>
+
+              <ng-template #miniQuantity>
+                <div class="mini-price">{{ orderService.formatCurrency(product.price) }} <small>/ bandeja de 24</small></div>
+                <div class="mini-quantity-row">
+                  <span>{{ orderService.quantity(product.id) }} bandejas ·
+                    {{ orderService.formatCurrency(orderService.lineTotal(product.id)) }}</span>
+                  <div class="qty-selector">
+                    <button type="button"
+                            [disabled]="orderService.quantity(product.id) === 0"
+                            aria-label="Quitar una bandeja de Mini Torrejas"
+                            (click)="orderService.updateQuantity(product.id, -1)">−</button>
+                    <span>{{ orderService.quantity(product.id) }}</span>
+                    <button type="button"
+                            class="add"
+                            aria-label="Agregar una bandeja de Mini Torrejas"
+                            (click)="orderService.updateQuantity(product.id, 1)">+</button>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </section>
+
+        <section class="services-strip" aria-label="Opciones de servicio">
+          <div class="service-item">
+            <span class="service-icon" aria-hidden="true">🚚</span>
+            <span class="service-copy">
+              <h4>Delivery</h4>
+              <p>Coordinamos la entrega contigo</p>
+            </span>
+          </div>
+          <div class="divider" aria-hidden="true"></div>
+          <div class="service-item">
+            <span class="service-icon" aria-hidden="true">📍</span>
+            <span class="service-copy">
+              <h4>Pick-up</h4>
+              <p>Recogida en Flagler</p>
+            </span>
+          </div>
+          <div class="divider" aria-hidden="true"></div>
+          <a class="service-item service-link"
+             href="https://wa.me/17862314086?text=Hola%2C%20equipo%20de%20Miami%20Torrejas.%20Estoy%20organizando%20una%20celebraci%C3%B3n%20y%20quisiera%20conocer%20sus%20opciones%20de%20catering%20y%20precios.%20%C2%BFMe%20podr%C3%ADan%20orientar%3F%20Muchas%20gracias."
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="Consultar opciones y precios de catering por WhatsApp">
+            <span class="service-icon" aria-hidden="true">🎉</span>
+            <span class="service-copy">
+              <h4>Catering</h4>
+              <p>Consulta opciones y precios <span class="service-arrow" aria-hidden="true">→</span></p>
+            </span>
+          </a>
+        </section>
+
+        <section id="cotizador" class="calculator-section">
+          <button type="button"
+                  class="calculator-toggle"
+                  [attr.aria-expanded]="calculatorOpen()"
+                  aria-controls="calculator-panel"
+                  (click)="toggleCalculator()">
+            <span>
+              <strong>🎉 Cotizar menú para buffet o eventos</strong>
+              <small>Calcula una cantidad sugerida para tu celebración</small>
+            </span>
+            <span class="toggle-icon" aria-hidden="true">{{ calculatorOpen() ? '−' : '+' }}</span>
+          </button>
+
+          @if (calculatorOpen()) {
+            <div id="calculator-panel" class="card calculator-card">
+              <div class="calc-header">
+                <h3>Cotizador rápido de eventos</h3>
+                <p>Cuéntanos un poco sobre tu celebración y coordinamos los detalles por WhatsApp.</p>
+              </div>
+
+              <div class="calc-grid">
+                <div class="input-box">
+                  <label for="guest-count">👥 ¿Cuántos invitados tendrás?</label>
+                  <input id="guest-count"
+                         type="number"
+                         [ngModel]="orderService.guestsCount()"
+                         (ngModelChange)="orderService.guestsCount.set($event)"
+                         min="1">
+                </div>
+
+                <div class="input-box">
+                  <label for="event-date">📅 Fecha del evento</label>
+                  <input id="event-date"
+                         type="date"
+                         [ngModel]="orderService.eventDate()"
+                         (ngModelChange)="orderService.eventDate.set($event)">
+                </div>
+
+                <div class="input-box">
+                  <label for="event-time">⏰ Hora estimada</label>
+                  <input id="event-time"
+                         type="time"
+                         [ngModel]="orderService.eventTime()"
+                         (ngModelChange)="orderService.eventTime.set($event)">
                 </div>
               </div>
+
+              <div class="recommendation-banner">
+                💡 Para <strong>{{ orderService.guestsCount() }} personas</strong>, te sugerimos
+                <span class="highlight">{{ orderService.recommendedTrays() }} bandeja(s) mini</span>.
+                Ajustamos la cantidad final contigo por WhatsApp.
+              </div>
             </div>
-          </div>
+          }
         </section>
 
-        <!-- BARRA DE CHECKOUT INFERIOR FLOTANTE -->
         <section class="sticky-checkout">
           <div class="delivery-toggle">
-            <button [class.active]="orderService.deliveryMethod() === 'pickup'" 
+            <button type="button"
+                    [class.active]="orderService.deliveryMethod() === 'pickup'"
+                    [attr.aria-pressed]="orderService.deliveryMethod() === 'pickup'"
                     (click)="orderService.setDeliveryMethod('pickup')">
-              📍 Pick-Up en Flagler ($0)
+              📍 Pick-Up en Flagler
             </button>
-            <button [class.active]="orderService.deliveryMethod() === 'delivery'" 
+            <button type="button"
+                    [class.active]="orderService.deliveryMethod() === 'delivery'"
+                    [attr.aria-pressed]="orderService.deliveryMethod() === 'delivery'"
                     (click)="orderService.setDeliveryMethod('delivery')">
-              🚚 Delivery en Miami (+$\${{ orderService.shippingCost() }})
+              🚚 Delivery · envío aparte
             </button>
           </div>
 
-          <div class="total-row">
-            <div class="sub-details">
-              <span>Subtotal: <strong>\${{ orderService.subtotal() }}</strong></span>
-              <span>Envío: <strong>\${{ orderService.shippingCost() }}</strong></span>
+          <div class="checkout-summary" aria-label="Resumen de precios">
+            <div class="payment-options">
+              <div class="payment-option">
+                <span class="payment-label">Efectivo</span>
+                <strong class="payment-amount">{{ orderService.formatCurrency(orderService.subtotal()) }}</strong>
+              </div>
+              <div class="payment-option">
+                <span class="payment-label">Tarjeta o Zelle</span>
+                <strong class="payment-amount">{{ orderService.formatCurrency(orderService.cardZelleTotal()) }}</strong>
+                <small class="tax-note">Impuestos incluidos</small>
+              </div>
             </div>
-            <div class="grand-total">
-              TOTAL ESTIMADO: <span>\${{ orderService.grandTotal() }} USD</span>
+            <div class="checkout-notes">
+              <span class="shipping-note">
+                {{ orderService.deliveryMethod() === 'delivery' ? 'Delivery: envío a convenir' : 'Pick-up en Flagler: sin costo de envío' }}
+              </span>
+              <span class="payment-note">El pago se coordina por WhatsApp; no se cobra en este sitio.</span>
             </div>
           </div>
 
-          <button class="whatsapp-btn glow-btn" 
-                  [disabled]="!orderService.isValidOrder()" 
+          <button type="button"
+                  class="whatsapp-btn glow-btn"
+                  [disabled]="!orderService.isValidOrder()"
                   (click)="sendToWhatsApp()">
-            📲 ENVIAR COTIZACIÓN POR WHATSAPP
+            📲 CONSULTAR Y RESERVAR POR WHATSAPP
           </button>
         </section>
-
       </div>
       <footer class="site-footer">
         <p>
@@ -770,11 +848,20 @@ import { FloatingBgComponent } from './components/floating-bg.component';
 })
 export class AppComponent {
   orderService: OrderService = inject(OrderService);
+  readonly calculatorOpen = signal(false);
+
+  toggleCalculator(): void {
+    this.calculatorOpen.update((open) => !open);
+  }
+
+  openCalculator(): void {
+    this.calculatorOpen.set(true);
+  }
 
   sendToWhatsApp() {
     if (this.orderService.isValidOrder()) {
       const url = this.orderService.generateWhatsAppLink();
-      window.open(url, '_blank');
+      window.open(url, '_blank', 'noopener,noreferrer');
     }
   }
 }
