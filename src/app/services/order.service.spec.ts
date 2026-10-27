@@ -43,11 +43,14 @@ describe('OrderService', () => {
 
   it('keeps delivery separate in the WhatsApp quote', () => {
     orderService.setDeliveryMethod('delivery');
+    orderService.guestsCount.set(35);
 
     const url = orderService.generateWhatsAppLink();
     const message = decodeURIComponent(url.split('?text=')[1] ?? '');
 
     expect(url.startsWith('https://wa.me/17862314086?text=')).toBe(true);
+    expect(message).not.toContain('Invitados estimados');
+    expect(orderService.recommendedTrays()).toBe(4);
     expect(message).toContain('10 torrejas clásicas ($20.00)');
     expect(message).toContain('Subtotal en efectivo: $20.00');
     expect(message).toContain('Total con tarjeta o Zelle (incluye impuestos): $21.40');

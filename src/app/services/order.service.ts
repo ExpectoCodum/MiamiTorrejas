@@ -151,7 +151,6 @@ export class OrderService {
       '',
       ...(this.eventDate() ? [`📅 Fecha del evento: ${this.eventDate()}`] : []),
       ...(this.eventTime() ? [`⏰ Hora: ${this.eventTime()}`] : []),
-      `👥 Invitados estimados: ${this.guestsCount()}`,
       `📍 Entrega: ${this.deliveryMethod() === 'delivery' ? 'Delivery (costo a convenir)' : 'Pick-Up en Flagler'}`,
       '',
       '*DETALLE DEL PEDIDO:*',
