@@ -181,6 +181,22 @@ import { FloatingBgComponent } from './components/floating-bg.component';
         </section>
 
       </div>
+      <footer class="site-footer">
+        <p>
+          Hecho por
+          <a href="https://expecto-codum.vercel.app/" target="_blank" rel="noopener noreferrer">
+            Expecto Codum
+          </a>
+        </p>
+        <nav class="footer-contact" aria-label="Contacto">
+          <a href="https://wa.me/59891355256" target="_blank" rel="noopener noreferrer">
+            WhatsApp: +598 9135 5256
+          </a>
+          <a href="https://t.me/+59891355256" target="_blank" rel="noopener noreferrer">
+            Telegram: +598 9135 5256
+          </a>
+        </nav>
+      </footer>
     </main>
   `,
   styles: [`
@@ -210,40 +226,6 @@ import { FloatingBgComponent } from './components/floating-bg.component';
       overflow-x: hidden;
       scroll-behavior: smooth;
     }
-
-    /* ANIMACIONES */
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes scaleUp {
-      from { opacity: 0; transform: scale(0.92); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes floating {
-      0% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-12px) rotate(1deg); }
-      100% { transform: translateY(0px) rotate(0deg); }
-    }
-    @keyframes shadowPulse {
-      0% { transform: scale(0.95); opacity: 0.3; }
-      50% { transform: scale(1.05); opacity: 0.5; }
-      100% { transform: scale(0.95); opacity: 0.3; }
-    }
-    @keyframes pulseAura {
-      0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.5; }
-      50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.75; }
-      100% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.5; }
-    }
-
-    .animate-fade-down { animation: fadeDown 0.8s ease-out forwards; }
-    .animate-scale-up { animation: scaleUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .animate-fade-up { animation: fadeUp 1s ease-out forwards; }
-    .float-animation { animation: floating 5s ease-in-out infinite; }
 
     /* BARRA SUPERIOR */
     .top-badge {
@@ -280,7 +262,6 @@ import { FloatingBgComponent } from './components/floating-bg.component';
       z-index: 0;
       border-radius: 50%;
       filter: blur(35px);
-      animation: pulseAura 6s ease-in-out infinite;
     }
 
     .hero-grid {
@@ -329,7 +310,6 @@ import { FloatingBgComponent } from './components/floating-bg.component';
       background: radial-gradient(ellipse at center, rgba(59, 24, 14, 0.4) 0%, rgba(0,0,0,0) 70%);
       margin: -10px auto 0;
       border-radius: 50%;
-      animation: shadowPulse 5s ease-in-out infinite;
     }
 
     /* TEXTO DE MARCA A LA DERECHA */
@@ -786,25 +766,6 @@ import { FloatingBgComponent } from './components/floating-bg.component';
       margin-left: 8px;
     }
 
-    .whatsapp-btn {
-      background: linear-gradient(135deg, #25D366 0%, #16a34a 100%);
-      color: white;
-      border: none;
-      padding: 18px;
-      border-radius: 16px;
-      font-size: 1.15rem;
-      font-weight: 900;
-      cursor: pointer;
-      box-shadow: 0 10px 25px rgba(37, 211, 102, 0.35);
-      letter-spacing: 0.5px;
-    }
-
-    .whatsapp-btn:disabled {
-      background: #4b5563;
-      box-shadow: none;
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
   `]
 })
 export class AppComponent {

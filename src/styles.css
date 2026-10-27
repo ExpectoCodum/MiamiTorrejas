@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
 
 :root {
   --bg-pink-light: #fff0f6;
@@ -34,4 +33,103 @@ body {
 ::-webkit-scrollbar-thumb {
   background: var(--magenta-brand);
   border-radius: 4px;
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floating {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(1deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+@keyframes shadowPulse {
+  0% { transform: scale(0.95); opacity: 0.3; }
+  50% { transform: scale(1.05); opacity: 0.5; }
+  100% { transform: scale(0.95); opacity: 0.3; }
+}
+
+@keyframes pulseAura {
+  0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.5; }
+  50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.75; }
+  100% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.5; }
+}
+
+app-root .animate-fade-down { animation: fadeDown 0.8s ease-out forwards; }
+app-root .animate-scale-up { animation: scaleUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+app-root .animate-fade-up { animation: fadeUp 1s ease-out forwards; }
+app-root .float-animation { animation: floating 5s ease-in-out infinite; }
+app-root .light-aura { animation: pulseAura 6s ease-in-out infinite; }
+app-root .shadow-base { animation: shadowPulse 5s ease-in-out infinite; }
+
+app-root .site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px 24px;
+  padding: 24px 16px;
+  color: #fff;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+app-root .site-footer p { margin: 0; }
+app-root .site-footer a { color: inherit; font-weight: 700; }
+
+app-root .footer-contact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 20px;
+}
+
+app-root .whatsapp-btn {
+  background: linear-gradient(135deg, #25D366 0%, #16a34a 100%);
+  color: white;
+  border: none;
+  padding: 18px;
+  border-radius: 16px;
+  font-size: 1.15rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.35);
+  letter-spacing: 0.5px;
+}
+
+app-root .whatsapp-btn:disabled {
+  background: #4b5563;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@media (max-width: 899px), (prefers-reduced-motion: reduce), (hover: none) and (pointer: coarse) {
+  app-root .animate-fade-down,
+  app-root .animate-scale-up,
+  app-root .animate-fade-up,
+  app-root .float-animation,
+  app-root .light-aura,
+  app-root .shadow-base {
+    animation: none !important;
+  }
+
+  app-root .insta-wrapper { scroll-behavior: auto; }
+  app-root .light-aura { display: none; }
+  app-root .hero-food-img { filter: none; }
+  app-root .calculator-card,
+  app-root .top-badge { backdrop-filter: none; }
 }

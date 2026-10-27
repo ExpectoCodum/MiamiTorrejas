@@ -140,6 +140,12 @@ interface DripItem {
         opacity: 0;
       }
     }
+
+    @media (max-width: 899px), (prefers-reduced-motion: reduce), (hover: none) and (pointer: coarse) {
+      .animation-container {
+        display: none;
+      }
+    }
   `]
 })
 export class FloatingBgComponent implements OnInit {
